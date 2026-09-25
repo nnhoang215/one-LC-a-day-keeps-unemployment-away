@@ -1,9 +1,5 @@
-class Solution {
-    /**
-     * @param {string} s
-     * @param {number} k
-     * @return {number}
-     */
+/* O (n^2) O(n)
+ class Solution {
     characterReplacement(s, k) {
         let res = 0;
         for (let i = 0; i < s.length; i++) {
@@ -15,6 +11,39 @@ class Solution {
                 if (j - i + 1 - maxf <= k) {
                     res = Math.max(res, j - i + 1);
                 }
+            }
+        }
+        return res;
+    }
+}
+*/
+// O(n * m) m = unique chars, O (m)
+class Solution {
+    /**
+     * @param {string} s
+     * @param {number} k
+     * @return {number}
+     */
+    characterReplacement(s, k) {
+        let res = 0;
+        let charSet = new Set(s);
+
+        for (let c of charSet) {
+            let count = 0,
+                l = 0;
+            for (let r = 0; r < s.length; r++) {
+                if (s[r] === c) {
+                    count++;
+                }
+
+                while (r - l + 1 - count > k) {
+                    if (s[l] === c) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = Math.max(res, r - l + 1);
             }
         }
         return res;
