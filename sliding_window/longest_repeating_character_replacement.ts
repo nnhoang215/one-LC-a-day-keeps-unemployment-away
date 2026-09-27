@@ -23,29 +23,31 @@ class Solution {
      * @param {string} s
      * @param {number} k
      * @return {number}
+     * 
+     * AAABABA k = 1
      */
-    characterReplacement(s, k) {
+    characterReplacement(s: string, k: number): number {
+        const charSet = new Set(s);
         let res = 0;
-        let charSet = new Set(s);
 
         for (let c of charSet) {
-            let count = 0,
-                l = 0;
+            let l = 0;
+            let count = 0;
+
             for (let r = 0; r < s.length; r++) {
-                if (s[r] === c) {
-                    count++;
-                }
+                if (s[r] === c) count++;
 
                 while (r - l + 1 - count > k) {
-                    if (s[l] === c) {
-                        count--;
-                    }
+                    if (s[l] === c) count--;
                     l++;
                 }
 
                 res = Math.max(res, r - l + 1);
             }
         }
+
         return res;
     }
 }
+
+// O (n*m) but then m at maximum just 26 characters in the alphabet => Basically O(n)        
