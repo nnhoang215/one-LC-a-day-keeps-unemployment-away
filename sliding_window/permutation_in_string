@@ -1,3 +1,69 @@
+class Solution {
+    /**
+     * @param {string} s1
+     * @param {string} s2
+     * @return {boolean}
+     */
+
+    /**
+     s2 = lecabee 
+     s1 = abc
+
+     traverse fixed size window -> O(n) O(1)  
+     lowercase letter => can track with Array. 
+
+     1. freqCount s1
+     2. count 1st window s2 
+     3. slide window till the end 
+     
+     */
+    checkInclusion(s1: string, s2: string): boolean {
+        const s1Count = new Array(26).fill(0);
+        const s2Count = new Array(26).fill(0);
+        const aCode = "a".charCodeAt(0);
+        let matches = 0;
+        let l = 0;
+
+        for (let i = 0; i < s1.length; i++) {
+            const idx1 = s1.charCodeAt(i) - aCode;
+            const idx2 = s2.charCodeAt(i) - aCode;
+            s1Count[idx1] = s1Count[idx1] + 1;
+            s2Count[idx2] = s2Count[idx2] + 1; 
+        }
+
+        for (let i = 0; i < 26; i++) {
+            if (s1Count[i] === s2Count[i]) matches++;
+        }
+
+        for (let r = s1.length; r < s2.length; r++) {
+            if (matches === 26) return true;
+
+            const idxR = s2.charCodeAt(r) - aCode;
+            s2Count[idxR] = s2Count[idxR] + 1;
+
+            if (s2Count[idxR] === s1Count[idxR]) {
+                matches++;
+            } else if (s1Count[idxR] + 1 === s2Count[idxR]) {
+                matches--;
+            }
+
+            const idxL = s2.charCodeAt(l) - aCode;
+            s2Count[idxL] = s2Count[idxL] - 1;
+
+            if (s2Count[idxL] + 1 === s1Count[idxL]) {
+                matches--;
+            } else if (s1Count[idxL] === s2Count[idxL]) {
+                matches++;
+            }
+            l++;
+        }
+
+        return matches === 26;
+    }
+}
+
+
+
 /*
 class Solution {
     // O (n * m) O(1)
