@@ -150,3 +150,59 @@ class Solution {
     }
 }
 
+
+I did this review:
+
+class Solution {
+    /**
+     * @param {string} s1
+     * @param {string} s2
+     * @return {boolean}
+     * 
+     Time = O(n), O(1)
+     */
+    checkInclusion(s1: string, s2: string): boolean {
+        const count1 = new Array(26).fill(0);
+        const count2 = new Array(26).fill(0);
+        const aCode = 'a'.charCodeAt(0);
+        let matches = 0;
+
+        for (let i = 0; i < s1.length; i++) {
+            let index = s1.charCodeAt(i) - aCode;
+            count1[index] = count1[index] + 1;
+
+            index = s2.charCodeAt(i) - aCode;
+            count2[index] = count2[index] + 1;
+        }
+
+        for (let i = 0; i < 26; i++) {
+            if (count1[i] === count2[i]) matches++;
+        }
+        let l = 0;
+        for (let r = s1.length; r < s2.length; r++) {
+            if (matches === 26) return true;
+            let index = s2.charCodeAt(r) - aCode;
+            count2[index] = count2[index] + 1; 
+            
+            if (count1[index] === count2[index]) {
+                matches++;
+            } else if (count1[index] + 1=== count2[index]) {
+                matches--;
+            }
+
+            index = s2.charCodeAt(l) - aCode;
+            
+            if (count1[index] === count2[index]) {
+                matches--;
+            } else if (count1[index] === count2[index] - 1) {
+                matches++;
+            }
+            count2[index] = count2[index] - 1;
+            l++;
+        } 
+
+        return matches === 26;
+
+    }
+}
+
