@@ -115,3 +115,44 @@ class Solution {
     }
 }
 
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number[]}
+     */
+
+    // Bucket sort
+    /**
+    num could exist at most nums.length times -> can fit in an array of lengths 
+
+    -> loop from the end of the array until there are k elements. 
+
+    O(n) O(n)
+     */
+    topKFrequent(nums, k) {
+        const count = {};
+
+        for (const num of nums) {
+            count[num] = (count[num] || 0) + 1;
+        }
+
+        // careful of off-by-1 issue
+        const freq = Array.from({ length: nums.length + 1 }, () => []);
+
+        for (const c in count) {
+            freq[count[c]].push(c);
+        }
+        const res = [];
+
+        for (let i = nums.length; i > 0; i--) {
+            for (const c of freq[i]) {
+                res.push(parseInt(c));
+                if (res.length == k) {
+                    return res;
+                }
+            }
+        }
+    }
+}
+
